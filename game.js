@@ -80,19 +80,20 @@ Bird.prototype.update = function(){
 }
 
 Bird.prototype.isDead = function(height, pipes){
-	if(this.y >= height || this.y + this.height <= 0){
-		return true;
-	}
-	for(var i in pipes){
-		if(!(
-			this.x > pipes[i].x + pipes[i].width ||
-			this.x + this.width < pipes[i].x || 
-			this.y > pipes[i].y + pipes[i].height ||
-			this.y + this.height < pipes[i].y
-			)){
-			return true;
-	}
-}
+        if(this.y >= height || this.y + this.height <= 0){
+                return true;
+        }
+        for(var i in pipes){
+                if(!(
+                        this.x > pipes[i].x + pipes[i].width ||
+                        this.x + this.width < pipes[i].x ||
+                        this.y > pipes[i].y + pipes[i].height ||
+                        this.y + this.height < pipes[i].y
+                        )){
+                        return true;
+                }
+        }
+        return false;
 }
 
 var Pipe = function(json){
@@ -245,12 +246,12 @@ Game.prototype.display = function(){
 	}
 
 	for(var i in this.pipes){
-		if(i%2 == 0){
-			this.ctx.drawImage(images.pipetop, this.pipes[i].x, this.pipes[i].y + this.pipes[i].height - images.pipetop.height, this.pipes[i].width, images.pipetop.height);
-		}else{
-			this.ctx.drawImage(images.pipebottom, this.pipes[i].x, this.pipes[i].y, this.pipes[i].width, images.pipetop.height);
-		}
-	}
+                if(i%2 == 0){
+                        this.ctx.drawImage(images.pipetop, this.pipes[i].x, this.pipes[i].y + this.pipes[i].height - images.pipetop.height, this.pipes[i].width, images.pipetop.height);
+                }else{
+                        this.ctx.drawImage(images.pipebottom, this.pipes[i].x, this.pipes[i].y, this.pipes[i].width, images.pipebottom.height);
+                }
+        }
 
 	this.ctx.fillStyle = "#FFC600";
 	this.ctx.strokeStyle = "#CE9E00";
