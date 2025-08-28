@@ -2,17 +2,253 @@
 <html>
 <head>
 	<title>NeuroEvolution : Flappy Bird</title>
-	<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Oswald:400,600' rel='stylesheet' type='text/css'>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		body {
+			margin: 0;
+			padding: 20px;
+			font-family: 'Oswald', sans-serif;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			color: #333;
+		}
+
+		.game-container {
+			background: white;
+			border-radius: 15px;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+			padding: 20px;
+			margin-bottom: 20px;
+			max-width: 540px;
+		}
+
+		.game-title {
+			text-align: center;
+			font-size: 28px;
+			font-weight: 600;
+			color: #2c3e50;
+			margin-bottom: 15px;
+			text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+		}
+
+		#flappy {
+			border: 3px solid #34495e;
+			border-radius: 10px;
+			display: block;
+			margin: 0 auto;
+			background: #ecf0f1;
+		}
+
+		.controls-panel {
+			background: #f8f9fa;
+			border-radius: 10px;
+			padding: 20px;
+			margin: 20px 0;
+			box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+		}
+
+		.controls-section {
+			margin-bottom: 15px;
+		}
+
+		.controls-label {
+			font-weight: 600;
+			color: #2c3e50;
+			margin-bottom: 10px;
+			display: block;
+			font-size: 16px;
+		}
+
+		.speed-controls {
+			display: flex;
+			gap: 8px;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+
+		.speed-btn {
+			background: linear-gradient(145deg, #3498db, #2980b9);
+			color: white;
+			border: none;
+			padding: 10px 16px;
+			border-radius: 8px;
+			cursor: pointer;
+			font-family: 'Oswald', sans-serif;
+			font-size: 14px;
+			font-weight: 600;
+			transition: all 0.3s ease;
+			box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+		}
+
+		.speed-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+		}
+
+		.speed-btn:active {
+			transform: translateY(0);
+		}
+
+		.speed-btn.max-speed {
+			background: linear-gradient(145deg, #e74c3c, #c0392b);
+		}
+
+		.game-controls {
+			display: flex;
+			gap: 10px;
+			justify-content: center;
+			flex-wrap: wrap;
+		}
+
+		.control-btn {
+			background: linear-gradient(145deg, #27ae60, #229954);
+			color: white;
+			border: none;
+			padding: 12px 20px;
+			border-radius: 8px;
+			cursor: pointer;
+			font-family: 'Oswald', sans-serif;
+			font-size: 14px;
+			font-weight: 600;
+			transition: all 0.3s ease;
+			box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+		}
+
+		.control-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+		}
+
+		.control-btn.pause {
+			background: linear-gradient(145deg, #f39c12, #d68910);
+		}
+
+		.control-btn.reset {
+			background: linear-gradient(145deg, #e67e22, #d35400);
+		}
+
+		.info-panel {
+			background: #2c3e50;
+			color: white;
+			border-radius: 10px;
+			padding: 15px;
+			text-align: center;
+			box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+		}
+
+		.github-link {
+			color: #3498db;
+			text-decoration: none;
+			font-weight: 600;
+			transition: color 0.3s ease;
+		}
+
+		.github-link:hover {
+			color: #2980b9;
+			text-decoration: underline;
+		}
+
+		.status-indicator {
+			display: inline-block;
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			margin-right: 8px;
+			background: #27ae60;
+			animation: pulse 2s infinite;
+		}
+
+		.status-indicator.paused {
+			background: #f39c12;
+		}
+
+		@keyframes pulse {
+			0% { opacity: 1; }
+			50% { opacity: 0.5; }
+			100% { opacity: 1; }
+		}
+
+		.help-text {
+			font-size: 12px;
+			color: #7f8c8d;
+			text-align: center;
+			margin-top: 10px;
+			padding: 8px;
+			background: rgba(236, 240, 241, 0.8);
+			border-radius: 6px;
+			border-left: 3px solid #3498db;
+		}
+
+		@media (max-width: 600px) {
+			body {
+				padding: 10px;
+			}
+			
+			.game-container {
+				padding: 15px;
+			}
+			
+			#flappy {
+				width: 100%;
+				max-width: 450px;
+				height: auto;
+			}
+			
+			.speed-controls, .game-controls {
+				gap: 6px;
+			}
+			
+			.speed-btn, .control-btn {
+				padding: 8px 12px;
+				font-size: 12px;
+			}
+		}
+	</style>
 </head>
 <body>
-	<canvas id="flappy" width="500" height="512"></canvas> <br/>
-	<button onclick="speed(60)">x1</button> 
-	<button onclick="speed(120)">x2</button> 
-	<button onclick="speed(180)">x3</button> 
-	<button onclick="speed(300)">x5</button> 
-	<button onclick="speed(0)">MAX</button> 
-	<br/>
-	<a href="http://github.com/xviniette/FlappyLearning">GitHub Repository</a>
+	<div class="game-container">
+		<h1 class="game-title">🐦 NeuroEvolution: Flappy Bird</h1>
+		<canvas id="flappy" width="500" height="512"></canvas>
+		
+		<div class="controls-panel">
+			<div class="controls-section">
+				<span class="controls-label">
+					<span class="status-indicator" id="status-indicator"></span>
+					Simulation Speed
+				</span>
+				<div class="speed-controls">
+					<button class="speed-btn" onclick="speed(60)" title="Keyboard: 1">1x</button>
+					<button class="speed-btn" onclick="speed(120)" title="Keyboard: 2">2x</button>
+					<button class="speed-btn" onclick="speed(180)" title="Keyboard: 3">3x</button>
+					<button class="speed-btn" onclick="speed(300)" title="Keyboard: 5">5x</button>
+					<button class="speed-btn max-speed" onclick="speed(0)" title="Keyboard: 0 or M">MAX</button>
+				</div>
+			</div>
+			
+			<div class="controls-section">
+				<span class="controls-label">Game Controls</span>
+				<div class="game-controls">
+					<button class="control-btn pause" id="pauseBtn" onclick="togglePause()" title="Keyboard: Space or P">⏸️ Pause</button>
+					<button class="control-btn reset" onclick="resetGame()" title="Keyboard: R">🔄 Reset</button>
+				</div>
+			</div>
+			
+			<div class="controls-section">
+				<div class="help-text">
+					💡 <strong>Keyboard Shortcuts:</strong> Space/P (Pause), R (Reset), 1-5/0/M (Speed)
+				</div>
+			</div>
+		</div>
+		
+		<div class="info-panel">
+			<a href="http://github.com/faxset/FlappyLearning" class="github-link">📚 View on GitHub</a>
+		</div>
+	</div>
+	
 	<script src = "Neuroevolution.js"></script>
 	<script src = "game.js"></script>
 </body>
